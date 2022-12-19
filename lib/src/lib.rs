@@ -1,3 +1,5 @@
+mod error;
+
 pub const DEFAULT_SPOOL_INMEMORY_SIZE: usize = 5242880; // 5 * 1024 * 1024, 5MiB
 
 pub struct WiwiBlob {
