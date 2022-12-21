@@ -20,6 +20,12 @@ const DATA: &str = "d";
 const MIN_FOR_EFFICIENT_PARALLELISATION: usize = 128 * 1024; // 128KiB
 const BUFFER_SIZE: usize = 2 * 1024 * 1024; // 2MiB
 
+#[derive(Default)]
+struct FileMeta {
+	filename: Option<String>,
+	owner: Option<String>
+}
+
 pub struct WiwiBlob {
 	dir: String,
 	spoolsize: usize
@@ -35,12 +41,12 @@ impl WiwiBlob {
 	}
 }
 
-fn hash_data(tempfile: &mut SpooledTempFile) -> Result<Hash> {
+fn hash_data<R: Read>(reader: &mut R) -> Result<Hash> {
 	let mut hash = Hasher::new();
 	let mut buf = vec![0u8; BUFFER_SIZE].into_boxed_slice();
 
 	loop {
-		let read_bytes = tempfile.read(&mut buf)?;
+		let read_bytes = reader.read(&mut buf)?;
 		if read_bytes == 0 { break }
 
 		// TODO && is_power_of_2(read_bytes)

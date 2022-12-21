@@ -5,14 +5,15 @@ use std::io::Write;
 use std::io::Seek;
 use std::io::SeekFrom;
 use super::error::Error;
+use super::FileMeta;
 use tempfile::spooled_tempfile;
 use tempfile::SpooledTempFile;
 use xz2::write::XzEncoder;
 
+#[must_use = "builder does nothing unless built"]
 pub struct WriterBuilder<'h> {
 	dir: &'h str,
-	filename: Option<String>,
-	owner: Option<String>,
+	filemeta: FileMeta,
 	spoolsize: usize
 }
 
@@ -22,14 +23,14 @@ impl<'h> WriterBuilder<'h> {
 	}
 
 	pub fn with_spoolsize(dir: &'h str, spoolsize: usize) -> Self {
-		Self { dir, spoolsize, filename: None, owner: None }
+		Self { dir, filemeta: FileMeta::default(), spoolsize }
 	}
 
 	pub fn set_filename(&mut self, filename: String) -> Result<()> {
 		if filename.len() > u16::MAX as usize {
 			return Err(Error::FilenameTooLong(filename.len()).into())
 		}
-		self.filename = Some(filename);
+		self.filemeta.filename = Some(filename);
 		Ok(())
 	}
 
@@ -37,7 +38,7 @@ impl<'h> WriterBuilder<'h> {
 		if owner.len() > u8::MAX as usize {
 			return Err(Error::OwnerTooLong(owner.len()).into())
 		}
-		self.owner = Some(owner);
+		self.filemeta.owner = Some(owner);
 		Ok(())
 	}
 
@@ -54,7 +55,8 @@ pub struct Writer {
 
 impl Writer {
 	pub fn from_builder(builder: WriterBuilder) -> Result<Self> {
-		let WriterBuilder { dir, filename, owner, spoolsize } = builder;
+		let WriterBuilder { dir, filemeta, spoolsize } = builder;
+		let FileMeta { filename, owner } = filemeta;
 
 		let tempfile = spooled_tempfile(spoolsize);
 		let mut xz = XzEncoder::new(tempfile, 0);
