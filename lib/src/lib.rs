@@ -6,6 +6,7 @@ use std::path;
 use tempfile::SpooledTempFile;
 
 mod error;
+mod read;
 mod write;
 
 pub const DEFAULT_SPOOL_INMEMORY_SIZE: usize = 5 * 1024 * 1024; // 5MiB
