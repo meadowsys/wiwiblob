@@ -62,14 +62,26 @@ impl Writer {
 		let mut xz = XzEncoder::new(tempfile, 0);
 
 		if let Some(filename) = filename {
+			let filename_bytes = super::FILENAME;
+			xz.write_all(&[filename_bytes.len() as u8])?;
+			xz.write_all(filename_bytes)?;
+
 			xz.write_all(&(filename.len() as u16).to_le_bytes())?;
 			xz.write_all(filename.as_bytes())?;
 		}
 
 		if let Some(owner) = owner {
+			let owner_bytes = super::OWNER;
+			xz.write_all(&[owner_bytes.len() as u8])?;
+			xz.write_all(owner_bytes)?;
+
 			xz.write_all(&[owner.len() as u8])?;
 			xz.write_all(owner.as_bytes())?;
 		}
+
+		let data_bytes = super::DATA;
+		xz.write_all(&[data_bytes.len() as u8])?;
+		xz.write_all(data_bytes)?;
 
 		Ok(Writer {
 			dir: dir.into(),

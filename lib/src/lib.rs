@@ -3,16 +3,15 @@ use blake3::Hasher;
 use blake3::Hash;
 use std::io::Read;
 use std::path;
-use tempfile::SpooledTempFile;
 
 mod error;
 mod read;
 mod write;
 
 pub const DEFAULT_SPOOL_INMEMORY_SIZE: usize = 5 * 1024 * 1024; // 5MiB
-const FILENAME: &str = "f";
-const OWNER: &str = "o";
-const DATA: &str = "d";
+const DATA: &[u8] = b"d";
+const FILENAME: &[u8] = b"f";
+const OWNER: &[u8] = b"o";
 
 /// 128KiB is minimum for efficient parallelisation on x86_64
 /// according to blake3 docs, so lets just use that, I don't know any better
