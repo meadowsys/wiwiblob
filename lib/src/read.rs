@@ -4,6 +4,7 @@ use std::io::Read;
 use std::io::Seek;
 use std::io::SeekFrom;
 use super::error::Error;
+use super::FileMeta;
 use xz2::read::XzDecoder;
 
 #[must_use = "builder does nothing unless built"]
@@ -25,6 +26,7 @@ impl<'h> ReaderBuilder<'h> {
 
 pub struct Reader {
 	dir: String,
+	filemeta: FileMeta,
 	xz: XzDecoder<fs::File>
 }
 
@@ -46,11 +48,58 @@ impl Reader {
 
 			file.seek(SeekFrom::Start(0))?;
 		}
+		let mut xz = XzDecoder::new(file);
 
-		let xz = XzDecoder::new(file);
+		let mut filemeta = FileMeta::default();
+
+		let mut one_buf = [0u8; 1];
+		let mut buf = vec![].into_boxed_slice();
+		loop {
+			xz.read_exact(&mut one_buf)?;
+			if one_buf[0] as usize > buf.len() {
+				buf = vec![0u8; one_buf[0] as usize].into()
+			}
+
+			let meta = &mut buf[0..one_buf[0] as usize];
+			xz.read_exact(meta)?;
+			match meta {
+				m if meta == super::DATA => { break }
+
+				m if meta == super::FILENAME => {
+					let mut filename_len = [0u8; 2];
+					xz.read_exact(&mut filename_len)?;
+					let filename_len = u16::from_le_bytes(filename_len);
+
+					let mut filename = vec![0u8; filename_len as usize].into_boxed_slice();
+					xz.read_exact(&mut filename)?;
+					let filename = String::from_utf8(filename.into_vec())?;
+
+					filemeta.filename = Some(filename);
+				}
+
+				m if meta == super::OWNER => {
+					let mut owner_len = [0u8; 1];
+					xz.read_exact(&mut owner_len)?;
+					let owner_len = u8::from_le_bytes(owner_len);
+
+					let mut owner = vec![0u8; owner_len as usize].into_boxed_slice();
+					xz.read_exact(&mut owner)?;
+					let owner = String::from_utf8(owner.into_vec())?;
+
+					filemeta.owner = Some(owner);
+				}
+
+				m => {
+					return Err(Error::UnknownMetaField(
+						String::from_utf8(m.to_vec())?
+					).into())
+				}
+			}
+		}
 
 		Ok(Reader {
 			dir: dir.into(),
+			filemeta,
 			xz
 		})
 	}
