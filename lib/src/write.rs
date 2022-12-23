@@ -49,8 +49,7 @@ impl<'h> WriterBuilder<'h> {
 
 pub struct Writer {
 	dir: String,
-	xz: XzEncoder<SpooledTempFile>,
-	spoolsize: usize
+	xz: XzEncoder<SpooledTempFile>
 }
 
 impl Writer {
@@ -85,8 +84,7 @@ impl Writer {
 
 		Ok(Writer {
 			dir: dir.into(),
-			xz,
-			spoolsize
+			xz
 		})
 	}
 }

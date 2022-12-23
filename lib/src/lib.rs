@@ -13,11 +13,11 @@ const DATA: &[u8] = b"d";
 const FILENAME: &[u8] = b"f";
 const OWNER: &[u8] = b"o";
 
-/// 128KiB is minimum for efficient parallelisation on x86_64
-/// according to blake3 docs, so lets just use that, I don't know any better
-/// probably insignificant anyways, but meh lol
-/// https://docs.rs/blake3/1.3.3/blake3/struct.Hasher.html#method.update_rayon
-const MIN_FOR_EFFICIENT_PARALLELISATION: usize = 128 * 1024; // 128KiB
+// /// 128KiB is minimum for efficient parallelisation on x86_64
+// /// according to blake3 docs, so lets just use that, I don't know any better
+// /// probably insignificant anyways, but meh lol
+// /// https://docs.rs/blake3/1.3.3/blake3/struct.Hasher.html#method.update_rayon
+// const MIN_FOR_EFFICIENT_PARALLELISATION: usize = 128 * 1024; // 128KiB
 const BUFFER_SIZE: usize = 2 * 1024 * 1024; // 2MiB
 
 #[derive(Default)]
@@ -38,6 +38,18 @@ impl WiwiBlob {
 
 	pub fn with_spoolsize(dir: String, spoolsize: usize) -> Self {
 		Self { dir, spoolsize }
+	}
+
+	pub fn reader_builder<'h>(&'h self, hash: &'h str) -> read::ReaderBuilder {
+		read::ReaderBuilder::new(&self.dir, hash)
+	}
+
+	pub fn writer_builder(&self) -> write::WriterBuilder {
+		write::WriterBuilder::with_spoolsize(&self.dir, self.spoolsize)
+	}
+
+	pub fn writer_builder_with_spoolsize(&self, spoolsize: usize) -> write::WriterBuilder {
+		write::WriterBuilder::with_spoolsize(&self.dir, spoolsize)
 	}
 }
 
@@ -75,6 +87,6 @@ fn get_path(dir: &str, hash: &str) -> path::PathBuf {
 	path
 }
 
-fn is_power_of_2(num: usize) -> bool {
-	(num & (num - 1)) == 0
-}
+// fn is_power_of_2(num: usize) -> bool {
+// 	(num & (num - 1)) == 0
+// }

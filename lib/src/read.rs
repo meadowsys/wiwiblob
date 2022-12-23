@@ -22,10 +22,13 @@ impl<'h> ReaderBuilder<'h> {
 	pub fn verify(&mut self, verify: bool) {
 		self.verify = verify;
 	}
+
+	pub fn build(self) -> Result<Reader> {
+		Reader::from_builder(self)
+	}
 }
 
 pub struct Reader {
-	dir: String,
 	filemeta: FileMeta,
 	xz: XzDecoder<fs::File>
 }
@@ -63,9 +66,9 @@ impl Reader {
 			let meta = &mut buf[0..one_buf[0] as usize];
 			xz.read_exact(meta)?;
 			match meta {
-				m if meta == super::DATA => { break }
+				_ if meta == super::DATA => { break }
 
-				m if meta == super::FILENAME => {
+				_ if meta == super::FILENAME => {
 					let mut filename_len = [0u8; 2];
 					xz.read_exact(&mut filename_len)?;
 					let filename_len = u16::from_le_bytes(filename_len);
@@ -77,7 +80,7 @@ impl Reader {
 					filemeta.filename = Some(filename);
 				}
 
-				m if meta == super::OWNER => {
+				_ if meta == super::OWNER => {
 					let mut owner_len = [0u8; 1];
 					xz.read_exact(&mut owner_len)?;
 					let owner_len = u8::from_le_bytes(owner_len);
@@ -89,19 +92,28 @@ impl Reader {
 					filemeta.owner = Some(owner);
 				}
 
-				m => {
+				unknown_meta => {
 					return Err(Error::UnknownMetaField(
-						String::from_utf8(m.to_vec())?
+						String::from_utf8(unknown_meta.to_vec())?
 					).into())
 				}
 			}
 		}
 
 		Ok(Reader {
-			dir: dir.into(),
 			filemeta,
 			xz
 		})
+	}
+}
+
+impl Reader {
+	pub fn get_filename(&self) -> Option<&str> {
+		self.filemeta.filename.as_deref()
+	}
+
+	pub fn get_owner(&self) -> Option<&str> {
+		self.filemeta.owner.as_deref()
 	}
 }
 
