@@ -105,9 +105,7 @@ impl Reader {
 			xz
 		})
 	}
-}
 
-impl Reader {
 	pub fn get_filename(&self) -> Option<&str> {
 		self.filemeta.filename.as_deref()
 	}
