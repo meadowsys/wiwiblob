@@ -11,6 +11,7 @@ use tempfile::SpooledTempFile;
 use xz2::write::XzEncoder;
 
 #[must_use = "builder does nothing unless built"]
+#[derive(Clone)]
 pub struct WriterBuilder {
 	dir: String,
 	filemeta: FileMeta,

@@ -8,6 +8,7 @@ use super::FileMeta;
 use xz2::read::XzDecoder;
 
 #[must_use = "builder does nothing unless built"]
+#[derive(Clone)]
 pub struct ReaderBuilder {
 	dir: String,
 	hash: String,

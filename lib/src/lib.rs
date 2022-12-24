@@ -20,7 +20,7 @@ const OWNER: &[u8] = b"o";
 // const MIN_FOR_EFFICIENT_PARALLELISATION: usize = 128 * 1024; // 128KiB
 const BUFFER_SIZE: usize = 2 * 1024 * 1024; // 2MiB
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 struct FileMeta {
 	filename: Option<String>,
 	owner: Option<String>
