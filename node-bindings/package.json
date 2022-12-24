@@ -1,7 +1,11 @@
 {
 	"private": true,
+	"type": "module",
+	"main": "./build/index.js",
+	"types": "./build/index.d.ts",
 	"scripts": {
-		"build:rs": "node build-and-cp-artifact.mjs"
+		"build:rs": "node build-and-cp-artifact.mjs",
+		"build:ts": "tsc"
 	},
 	"devDependencies": {
 		"@types/node": "^18.11.17"
