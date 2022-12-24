@@ -20,6 +20,15 @@ fn init(mut cx: ModuleContext) -> NeonResult<()> {
 		let new_wiwiblob_with_spoolsize = JsFunction::new(cx, wiwiblob::with_spoolsize)?;
 		wiwiblob.set(cx, "new_wiwiblob_with_spoolsize", new_wiwiblob_with_spoolsize)?;
 
+		let reader_builder = JsFunction::new(cx, wiwiblob::reader_builder)?;
+		wiwiblob.set(cx, "reader_builder", reader_builder)?;
+
+		let writer_builder = JsFunction::new(cx, wiwiblob::writer_builder)?;
+		wiwiblob.set(cx, "writer_builder", writer_builder)?;
+
+		let writer_builder_with_spoolsize = JsFunction::new(cx, wiwiblob::writer_builder_with_spoolsize)?;
+		wiwiblob.set(cx, "writer_builder_with_spoolsize", writer_builder_with_spoolsize)?;
+
 		exports.set(cx, "wiwiblob", wiwiblob)?;
 	}
 

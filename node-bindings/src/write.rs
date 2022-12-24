@@ -3,13 +3,13 @@ use wiwibloblib::write::Writer as RawWriter;
 use wiwibloblib::write::WriterBuilder as RawWriterBuilder;
 
 pub struct Writer {
-	inner: RawWriter
+	pub inner: RawWriter
 }
 
 impl Finalize for Writer {}
 
 pub struct WriterBuilder {
-	inner: RawWriterBuilder
+	pub inner: RawWriterBuilder
 }
 
 impl Finalize for WriterBuilder {}
