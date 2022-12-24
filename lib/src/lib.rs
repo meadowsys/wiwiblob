@@ -40,7 +40,7 @@ impl WiwiBlob {
 		Self { dir, spoolsize }
 	}
 
-	pub fn reader_builder<'h>(&'h self, hash: String) -> read::ReaderBuilder {
+	pub fn reader_builder(&self, hash: String) -> read::ReaderBuilder {
 		read::ReaderBuilder::new(self.dir.clone(), hash)
 	}
 
