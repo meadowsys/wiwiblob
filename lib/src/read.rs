@@ -8,14 +8,14 @@ use super::FileMeta;
 use xz2::read::XzDecoder;
 
 #[must_use = "builder does nothing unless built"]
-pub struct ReaderBuilder<'h> {
-	dir: &'h str,
-	hash: &'h str,
+pub struct ReaderBuilder {
+	dir: String,
+	hash: String,
 	verify: bool
 }
 
-impl<'h> ReaderBuilder<'h> {
-	pub(crate) fn new(dir: &'h str, hash: &'h str) -> Self {
+impl ReaderBuilder {
+	pub(crate) fn new(dir: String, hash: String) -> Self {
 		Self { dir, hash, verify: false }
 	}
 
@@ -38,15 +38,15 @@ impl Reader {
 	pub fn from_builder(builder: ReaderBuilder) -> Result<Self> {
 		let ReaderBuilder { dir, hash, verify } = builder;
 
-		let path = super::get_path(dir, hash);
+		let path = super::get_path(&dir, &hash);
 		let mut file = fs::OpenOptions::new()
 			.read(true)
 			.open(path)?;
 
 		if verify {
 			let actual_hash = super::hash_data(&mut file)?.to_hex();
-			if hash != &actual_hash {
-				return Err(Error::MismatchedHash { expected: hash.into(), got: actual_hash.to_string() }.into())
+			if *hash != actual_hash {
+				return Err(Error::MismatchedHash { expected: hash, got: actual_hash.to_string() }.into())
 			}
 
 			file.seek(SeekFrom::Start(0))?;

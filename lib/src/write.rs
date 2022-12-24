@@ -11,18 +11,18 @@ use tempfile::SpooledTempFile;
 use xz2::write::XzEncoder;
 
 #[must_use = "builder does nothing unless built"]
-pub struct WriterBuilder<'h> {
-	dir: &'h str,
+pub struct WriterBuilder {
+	dir: String,
 	filemeta: FileMeta,
 	spoolsize: usize
 }
 
-impl<'h> WriterBuilder<'h> {
-	pub(crate) fn new(dir: &'h str) -> Self {
+impl WriterBuilder {
+	pub(crate) fn new(dir: String) -> Self {
 		Self::with_spoolsize(dir, super::DEFAULT_SPOOL_INMEMORY_SIZE)
 	}
 
-	pub(crate) fn with_spoolsize(dir: &'h str, spoolsize: usize) -> Self {
+	pub(crate) fn with_spoolsize(dir: String, spoolsize: usize) -> Self {
 		Self { dir, filemeta: FileMeta::default(), spoolsize }
 	}
 
