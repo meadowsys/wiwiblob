@@ -1,6 +1,8 @@
 use neon::prelude::*;
 
+mod read;
 mod wiwiblob;
+mod write;
 
 #[neon::main]
 fn init(mut cx: ModuleContext) -> NeonResult<()> {
