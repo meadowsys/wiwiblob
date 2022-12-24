@@ -15,7 +15,7 @@ pub struct ReaderBuilder<'h> {
 }
 
 impl<'h> ReaderBuilder<'h> {
-	pub fn new(dir: &'h str, hash: &'h str) -> Self {
+	pub(crate) fn new(dir: &'h str, hash: &'h str) -> Self {
 		Self { dir, hash, verify: false }
 	}
 

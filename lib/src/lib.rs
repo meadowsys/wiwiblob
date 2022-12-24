@@ -4,9 +4,9 @@ use blake3::Hash;
 use std::io::Read;
 use std::path;
 
-mod error;
-mod read;
-mod write;
+pub mod error;
+pub mod read;
+pub mod write;
 
 pub const DEFAULT_SPOOL_INMEMORY_SIZE: usize = 5 * 1024 * 1024; // 5MiB
 const DATA: &[u8] = b"d";

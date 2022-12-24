@@ -18,11 +18,11 @@ pub struct WriterBuilder<'h> {
 }
 
 impl<'h> WriterBuilder<'h> {
-	pub fn new(dir: &'h str) -> Self {
+	pub(crate) fn new(dir: &'h str) -> Self {
 		Self::with_spoolsize(dir, super::DEFAULT_SPOOL_INMEMORY_SIZE)
 	}
 
-	pub fn with_spoolsize(dir: &'h str, spoolsize: usize) -> Self {
+	pub(crate) fn with_spoolsize(dir: &'h str, spoolsize: usize) -> Self {
 		Self { dir, filemeta: FileMeta::default(), spoolsize }
 	}
 
