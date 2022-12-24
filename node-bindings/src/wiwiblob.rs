@@ -1,5 +1,6 @@
 use neon::prelude::*;
 use wiwibloblib::WiwiBlob as RawWiwiBlob;
+use std::cell::RefCell;
 use super::write::WriterBuilder;
 use super::read::ReaderBuilder;
 
@@ -37,7 +38,7 @@ pub fn reader_builder(mut cx: FunctionContext) -> JsResult<JsBox<ReaderBuilder>>
 	let hash = cx.argument::<JsString>(1)?.value(cx);
 
 	Ok(cx.boxed(ReaderBuilder {
-		inner: wiwiblob.inner.reader_builder(hash)
+		inner: RefCell::new(wiwiblob.inner.reader_builder(hash))
 	}))
 }
 
@@ -47,7 +48,7 @@ pub fn writer_builder(mut cx: FunctionContext) -> JsResult<JsBox<WriterBuilder>>
 	let wiwiblob = cx.argument::<JsBox<WiwiBlob>>(0)?;
 
 	Ok(cx.boxed(WriterBuilder {
-		inner: wiwiblob.inner.writer_builder()
+		inner: RefCell::new(wiwiblob.inner.writer_builder())
 	}))
 }
 
@@ -58,6 +59,6 @@ pub fn writer_builder_with_spoolsize(mut cx: FunctionContext) -> JsResult<JsBox<
 	let spoolsize = cx.argument::<JsNumber>(1)?.value(cx) as usize;
 
 	Ok(cx.boxed(WriterBuilder {
-		inner: wiwiblob.inner.writer_builder_with_spoolsize(spoolsize)
+		inner: RefCell::new(wiwiblob.inner.writer_builder_with_spoolsize(spoolsize))
 	}))
 }

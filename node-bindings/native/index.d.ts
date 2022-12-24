@@ -14,6 +14,12 @@ declare namespace native {
 		export function writer_builder(wiwiblob: WiwiBlob): WriterBuilder
 		export function writer_builder_with_spoolsize(wiwiblob: WiwiBlob, spoolsize: number): WriterBuilder
 	}
+
+	export namespace writer_builder {
+		export function set_filename(writer_builder: WriterBuilder, filename: string): void;
+		export function set_owner(writer_builder: WriterBuilder, owner: string): void;
+		export function build(writer_builder: WriterBuilder): Writer;
+	}
 }
 
 export default native;

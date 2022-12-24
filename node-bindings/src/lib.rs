@@ -32,5 +32,21 @@ fn init(mut cx: ModuleContext) -> NeonResult<()> {
 		exports.set(cx, "wiwiblob", wiwiblob)?;
 	}
 
+	// writer_builder
+	{
+		let writer_builder = cx.empty_object();
+
+		let set_filename = JsFunction::new(cx, write::set_filename)?;
+		writer_builder.set(cx, "set_filename", set_filename)?;
+
+		let set_owner = JsFunction::new(cx, write::set_owner)?;
+		writer_builder.set(cx, "set_owner", set_owner)?;
+
+		let build = JsFunction::new(cx, write::build)?;
+		writer_builder.set(cx, "build", build)?;
+
+		exports.set(cx, "writer_builder", writer_builder)?;
+	}
+
 	Ok(())
 }
