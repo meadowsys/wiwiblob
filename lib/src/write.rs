@@ -83,10 +83,7 @@ impl Writer {
 		xz.write_all(&[data_bytes.len() as u8])?;
 		xz.write_all(data_bytes)?;
 
-		Ok(Writer {
-			dir: dir.into(),
-			xz
-		})
+		Ok(Writer { dir, xz })
 	}
 }
 
