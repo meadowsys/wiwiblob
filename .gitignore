@@ -1,3 +1,4 @@
 /node_modules
+/node-bindings/build
 /node-bindings/node_modules
 /target
