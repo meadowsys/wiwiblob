@@ -5,17 +5,17 @@ use std::io::Write;
 use wiwibloblib::write::Writer as RawWriter;
 use wiwibloblib::write::WriterBuilder as RawWriterBuilder;
 
-pub struct Writer {
-	pub inner: RefCell<Option<RawWriter>>
-}
-
-impl Finalize for Writer {}
-
 pub struct WriterBuilder {
 	pub inner: RefCell<RawWriterBuilder>
 }
 
 impl Finalize for WriterBuilder {}
+
+pub struct Writer {
+	pub inner: RefCell<Option<RawWriter>>
+}
+
+impl Finalize for Writer {}
 
 pub fn set_filename(mut cx: FunctionContext) -> JsResult<JsUndefined> {
 	let cx = &mut cx;
