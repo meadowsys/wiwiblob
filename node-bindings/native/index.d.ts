@@ -20,6 +20,11 @@ declare namespace native {
 		export function set_owner(writer_builder: WriterBuilder, owner: string): void;
 		export function build(writer_builder: WriterBuilder): Writer;
 	}
+
+	export namespace writer {
+		export function write_all(writer: Writer, buf: Buffer): void;
+		export function finish(writer: Writer): string;
+	}
 }
 
 export default native;

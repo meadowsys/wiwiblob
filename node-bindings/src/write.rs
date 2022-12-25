@@ -1,10 +1,12 @@
 use neon::prelude::*;
+use neon::types::buffer::TypedArray;
 use std::cell::RefCell;
+use std::io::Write;
 use wiwibloblib::write::Writer as RawWriter;
 use wiwibloblib::write::WriterBuilder as RawWriterBuilder;
 
 pub struct Writer {
-	pub inner: RefCell<RawWriter>
+	pub inner: RefCell<Option<RawWriter>>
 }
 
 impl Finalize for Writer {}
@@ -63,6 +65,42 @@ pub fn build(mut cx: FunctionContext) -> JsResult<JsBox<Writer>> {
 	};
 
 	Ok(cx.boxed(Writer {
-		inner: RefCell::new(writer)
+		inner: RefCell::new(Some(writer))
 	}))
+}
+
+pub fn write_all(mut cx: FunctionContext) -> JsResult<JsUndefined> {
+	let cx = &mut cx;
+
+	let writer = cx.argument::<JsBox<Writer>>(0)?;
+	let mut writer_opt = writer.inner.borrow_mut();
+	let mut writer = writer_opt.take().unwrap();
+	let buf = cx.argument::<JsBuffer>(1)?;
+
+	let res = writer.write_all(buf.as_slice(cx));
+	*writer_opt = Some(writer);
+
+	match res {
+		Ok(_) => { Ok(cx.undefined()) }
+		Err(e) => {
+			let e = cx.error(e.to_string())?;
+			cx.throw(e)?
+		}
+	}
+}
+
+pub fn finish(mut cx: FunctionContext) -> JsResult<JsString> {
+	let cx = &mut cx;
+
+	let writer = cx.argument::<JsBox<Writer>>(0)?;
+	let mut writer_opt = writer.inner.borrow_mut();
+	let writer = writer_opt.take().unwrap();
+
+	match writer.finish() {
+		Ok(hash) => { Ok(cx.string(hash)) }
+		Err(e) => {
+			let e = cx.error(e.to_string())?;
+			cx.throw(e)?
+		}
+	}
 }

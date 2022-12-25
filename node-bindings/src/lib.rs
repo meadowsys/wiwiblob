@@ -48,5 +48,18 @@ fn init(mut cx: ModuleContext) -> NeonResult<()> {
 		exports.set(cx, "writer_builder", writer_builder)?;
 	}
 
+	// writer
+	{
+		let writer = cx.empty_object();
+
+		let write_all = JsFunction::new(cx, write::write_all)?;
+		writer.set(cx, "write_all", write_all)?;
+
+		let finish = JsFunction::new(cx, write::finish)?;
+		writer.set(cx, "finish", finish)?;
+
+		exports.set(cx, "writer", writer)?;
+	}
+
 	Ok(())
 }
