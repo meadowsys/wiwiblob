@@ -10,9 +10,9 @@ declare namespace native {
 	export namespace wiwiblob {
 		export function new_wiwiblob(dir: string): WiwiBlob;
 		export function new_wiwiblob_with_spoolsize(dir: string, spoolsize: number): WiwiBlob;
-		export function reader_builder(wiwiblob: WiwiBlob, hash: string): ReaderBuilder
-		export function writer_builder(wiwiblob: WiwiBlob): WriterBuilder
-		export function writer_builder_with_spoolsize(wiwiblob: WiwiBlob, spoolsize: number): WriterBuilder
+		export function reader_builder(wiwiblob: WiwiBlob, hash: string): ReaderBuilder;
+		export function writer_builder(wiwiblob: WiwiBlob): WriterBuilder;
+		export function writer_builder_with_spoolsize(wiwiblob: WiwiBlob, spoolsize: number): WriterBuilder;
 	}
 
 	export namespace reader_builder {
