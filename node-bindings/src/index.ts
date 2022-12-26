@@ -22,12 +22,19 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 
 			let stream = new Readable({
 				read(size) {
-					while (size > 0) {
-						console.log(size);
-						let [buf, read_bytes] = native.reader.read_to_new_buffer(reader, size);
+					let read_bytes = 1;
+					let buf: Buffer;
+
+					do {
+						try {
+							[buf, read_bytes] = native.reader.read_to_new_buffer(reader, size);
+						} catch (err: any) {
+							this.destroy(err);
+							break;
+						}
 						size -= read_bytes;
 						this.push(buf, "binary");
-					}
+					} while (size > 0 && read_bytes > 0);
 				}
 			});
 
