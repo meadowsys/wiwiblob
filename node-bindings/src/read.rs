@@ -76,21 +76,27 @@ pub fn get_owner(mut cx: FunctionContext) -> JsResult<JsValue> {
 	}
 }
 
-pub fn read_exact_to_new_buffer(mut cx: FunctionContext) -> JsResult<JsBuffer> {
+pub fn read_to_new_buffer(mut cx: FunctionContext) -> JsResult<JsArray> {
 	let cx = &mut cx;
 
 	let reader = cx.argument::<JsBox<Reader>>(0)?;
 	let mut reader = reader.inner.borrow_mut();
 	let bufsize = cx.argument::<JsNumber>(1)?.value(cx) as usize;
 
-	let mut buf = cx.buffer(bufsize)?;
-	match reader.read_exact(buf.as_mut_slice(cx)) {
-		Ok(_) => {}
+	let mut buf = vec![0u8; bufsize].into_boxed_slice();
+	let bytes_read = match reader.read(&mut buf) {
+		Ok(num) => { num }
 		Err(e) => {
 			let e = cx.error(e.to_string())?;
 			cx.throw(e)?
 		}
-	}
+	};
+	let buf = JsBuffer::from_slice(cx, &buf[0..bytes_read])?;
+	let bytes_read = cx.number(bytes_read as f64);
 
-	Ok(buf)
+	let rv = JsArray::new(cx, 2);
+	rv.set(cx, 0, buf)?;
+	rv.set(cx, 1, bytes_read)?;
+
+	Ok(rv)
 }

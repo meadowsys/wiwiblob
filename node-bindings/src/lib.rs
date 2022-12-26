@@ -55,8 +55,8 @@ fn init(mut cx: ModuleContext) -> NeonResult<()> {
 		let get_owner = JsFunction::new(cx, read::get_owner)?;
 		reader.set(cx, "get_owner", get_owner)?;
 
-		let read_exact_to_new_buffer = JsFunction::new(cx, read::read_exact_to_new_buffer)?;
-		reader.set(cx, "read_exact_to_new_buffer", read_exact_to_new_buffer)?;
+		let read_to_new_buffer = JsFunction::new(cx, read::read_to_new_buffer)?;
+		reader.set(cx, "read_to_new_buffer", read_to_new_buffer)?;
 
 		exports.set(cx, "reader", reader)?;
 	}
