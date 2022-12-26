@@ -33,7 +33,11 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 							break;
 						}
 						size -= read_bytes;
-						this.push(buf, "binary");
+						if (read_bytes > 0) {
+							this.push(buf, "binary");
+						} else {
+							this.push(null);
+						}
 					} while (size > 0 && read_bytes > 0);
 				}
 			});
