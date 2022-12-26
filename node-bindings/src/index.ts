@@ -1,4 +1,5 @@
 import native from "../native/index.js";
+import { Readable, Writable } from "stream";
 
 export function new_wiwiblob(dir: string, spoolsize?: number) {
 	let wiwiblob = spoolsize
@@ -19,7 +20,18 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 		function build() {
 			let reader = native.reader_builder.build(reader_builder);
 
-			return { get_filename, get_owner, read_bytes };
+			let stream = new Readable({
+				read(size) {
+					while (size > 0) {
+						console.log(size);
+						let [buf, read_bytes] = native.reader.read_to_new_buffer(reader, size);
+						size -= read_bytes;
+						this.push(buf, "binary");
+					}
+				}
+			});
+
+			return { get_filename, get_owner, stream };
 
 			function get_filename() {
 				return native.reader.get_filename(reader);
@@ -27,10 +39,6 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 
 			function get_owner() {
 				return native.reader.get_owner(reader);
-			}
-
-			function read_bytes(bufsize: number) {
-				return native.reader.read_exact_to_new_buffer(reader, bufsize);
 			}
 		}
 	}
