@@ -67,9 +67,9 @@ impl Reader {
 			let meta = &mut buf[0..one_buf[0] as usize];
 			xz.read_exact(meta)?;
 			match meta {
-				_ if meta == super::DATA => { break }
+				meta if meta == super::DATA => { break }
 
-				_ if meta == super::FILENAME => {
+				meta if meta == super::FILENAME => {
 					let mut filename_len = [0u8; 2];
 					xz.read_exact(&mut filename_len)?;
 					let filename_len = u16::from_le_bytes(filename_len);
@@ -81,7 +81,7 @@ impl Reader {
 					filemeta.filename = Some(filename);
 				}
 
-				_ if meta == super::OWNER => {
+				meta if meta == super::OWNER => {
 					let mut owner_len = [0u8; 1];
 					xz.read_exact(&mut owner_len)?;
 					let owner_len = u8::from_le_bytes(owner_len);
@@ -91,6 +91,30 @@ impl Reader {
 					let owner = String::from_utf8(owner.into_vec())?;
 
 					filemeta.owner = Some(owner);
+				}
+
+				meta if meta == super::OTHER_META => {
+					let mut key_len = [0u8; 8];
+					xz.read_exact(&mut key_len)?;
+					let key_len = u64::from_le_bytes(key_len);
+
+					let mut key = vec![0u8; key_len as usize].into_boxed_slice();
+					xz.read_exact(&mut key)?;
+					let k = String::from_utf8(key.into_vec())?;
+
+					let mut value_len = [0u8; 8];
+					xz.read_exact(&mut value_len)?;
+					let value_len = u64::from_le_bytes(value_len);
+
+					let mut value = vec![0u8; value_len as usize].into_boxed_slice();
+					xz.read_exact(&mut value)?;
+					let v = String::from_utf8(value.into_vec())?;
+
+					if let Some(vec) = filemeta.other_meta.get_mut(&k) {
+						vec.push(v);
+					} else {
+						filemeta.other_meta.insert(k, vec![v]);
+					}
 				}
 
 				unknown_meta => {

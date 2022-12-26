@@ -19,10 +19,6 @@ pub struct WriterBuilder {
 }
 
 impl WriterBuilder {
-	pub(crate) fn new(dir: String) -> Self {
-		Self::with_spoolsize(dir, super::DEFAULT_SPOOL_INMEMORY_SIZE)
-	}
-
 	pub(crate) fn with_spoolsize(dir: String, spoolsize: usize) -> Self {
 		Self { dir, filemeta: FileMeta::default(), spoolsize }
 	}
@@ -43,6 +39,14 @@ impl WriterBuilder {
 		Ok(())
 	}
 
+	pub fn set_other_meta(&mut self, k: String, v: String) {
+		if let Some(vec) = self.filemeta.other_meta.get_mut(&k) {
+			vec.push(v);
+		} else {
+			self.filemeta.other_meta.insert(k, vec![v]);
+		}
+	}
+
 	pub fn build(self) -> Result<Writer> {
 		Writer::from_builder(self)
 	}
@@ -56,7 +60,7 @@ pub struct Writer {
 impl Writer {
 	pub fn from_builder(builder: WriterBuilder) -> Result<Self> {
 		let WriterBuilder { dir, filemeta, spoolsize } = builder;
-		let FileMeta { filename, owner } = filemeta;
+		let FileMeta { filename, owner, other_meta } = filemeta;
 
 		let tempfile = spooled_tempfile(spoolsize);
 		let mut xz = XzEncoder::new(tempfile, 0);
@@ -82,6 +86,20 @@ impl Writer {
 		let data_bytes = super::DATA;
 		xz.write_all(&[data_bytes.len() as u8])?;
 		xz.write_all(data_bytes)?;
+
+		let other_meta_bytes = super::OTHER_META;
+		for (key, value_vec) in other_meta.into_iter() {
+			for value in value_vec {
+				xz.write_all(&[other_meta_bytes.len() as u8])?;
+				xz.write_all(other_meta_bytes)?;
+
+				xz.write_all(&(key.len() as u64).to_le_bytes())?;
+				xz.write_all(key.as_bytes())?;
+
+				xz.write_all(&(value.len() as u64).to_le_bytes())?;
+				xz.write_all(value.as_bytes())?;
+			}
+		}
 
 		Ok(Writer { dir, xz })
 	}

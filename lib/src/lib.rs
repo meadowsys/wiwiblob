@@ -1,6 +1,7 @@
 use anyhow::Result;
 use blake3::Hasher;
 use blake3::Hash;
+use std::collections::HashMap;
 use std::io::Read;
 use std::path;
 
@@ -12,6 +13,7 @@ pub const DEFAULT_SPOOL_INMEMORY_SIZE: usize = 5 * 1024 * 1024; // 5MiB
 const DATA: &[u8] = b"d";
 const FILENAME: &[u8] = b"f";
 const OWNER: &[u8] = b"o";
+const OTHER_META: &[u8] = b"m";
 
 // /// 128KiB is minimum for efficient parallelisation on x86_64
 // /// according to blake3 docs, so lets just use that, I don't know any better
@@ -23,7 +25,8 @@ const BUFFER_SIZE: usize = 2 * 1024 * 1024; // 2MiB
 #[derive(Default, Clone)]
 struct FileMeta {
 	filename: Option<String>,
-	owner: Option<String>
+	owner: Option<String>,
+	other_meta: HashMap<String, Vec<String>>
 }
 
 pub struct WiwiBlob {
