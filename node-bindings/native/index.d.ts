@@ -15,17 +15,6 @@ declare namespace native {
 		export function writer_builder_with_spoolsize(wiwiblob: WiwiBlob, spoolsize: number): WriterBuilder
 	}
 
-	export namespace writer_builder {
-		export function set_filename(writer_builder: WriterBuilder, filename: string): void;
-		export function set_owner(writer_builder: WriterBuilder, owner: string): void;
-		export function build(writer_builder: WriterBuilder): Writer;
-	}
-
-	export namespace writer {
-		export function write_all(writer: Writer, buf: Buffer): void;
-		export function finish(writer: Writer): string;
-	}
-
 	export namespace reader_builder {
 		export function verify(reader_builder: ReaderBuilder, verify: boolean): void;
 		export function build(reader_builder: ReaderBuilder): Reader;
@@ -35,6 +24,17 @@ declare namespace native {
 		export function get_filename(reader: Reader): string | undefined;
 		export function get_owner(reader: Reader): string | undefined;
 		export function read_exact_to_new_buffer(reader: Reader, bufsize: number): Buffer;
+	}
+
+	export namespace writer_builder {
+		export function set_filename(writer_builder: WriterBuilder, filename: string): void;
+		export function set_owner(writer_builder: WriterBuilder, owner: string): void;
+		export function build(writer_builder: WriterBuilder): Writer;
+	}
+
+	export namespace writer {
+		export function write_all(writer: Writer, buf: Buffer): void;
+		export function finish(writer: Writer): string;
 	}
 }
 

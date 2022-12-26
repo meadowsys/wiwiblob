@@ -32,35 +32,6 @@ fn init(mut cx: ModuleContext) -> NeonResult<()> {
 		exports.set(cx, "wiwiblob", wiwiblob)?;
 	}
 
-	// writer_builder
-	{
-		let writer_builder = cx.empty_object();
-
-		let set_filename = JsFunction::new(cx, write::set_filename)?;
-		writer_builder.set(cx, "set_filename", set_filename)?;
-
-		let set_owner = JsFunction::new(cx, write::set_owner)?;
-		writer_builder.set(cx, "set_owner", set_owner)?;
-
-		let build = JsFunction::new(cx, write::build)?;
-		writer_builder.set(cx, "build", build)?;
-
-		exports.set(cx, "writer_builder", writer_builder)?;
-	}
-
-	// writer
-	{
-		let writer = cx.empty_object();
-
-		let write_all = JsFunction::new(cx, write::write_all)?;
-		writer.set(cx, "write_all", write_all)?;
-
-		let finish = JsFunction::new(cx, write::finish)?;
-		writer.set(cx, "finish", finish)?;
-
-		exports.set(cx, "writer", writer)?;
-	}
-
 	// reader_builder
 	{
 		let reader_builder = cx.empty_object();
@@ -88,6 +59,35 @@ fn init(mut cx: ModuleContext) -> NeonResult<()> {
 		reader.set(cx, "read_exact_to_new_buffer", read_exact_to_new_buffer)?;
 
 		exports.set(cx, "reader", reader)?;
+	}
+
+	// writer_builder
+	{
+		let writer_builder = cx.empty_object();
+
+		let set_filename = JsFunction::new(cx, write::set_filename)?;
+		writer_builder.set(cx, "set_filename", set_filename)?;
+
+		let set_owner = JsFunction::new(cx, write::set_owner)?;
+		writer_builder.set(cx, "set_owner", set_owner)?;
+
+		let build = JsFunction::new(cx, write::build)?;
+		writer_builder.set(cx, "build", build)?;
+
+		exports.set(cx, "writer_builder", writer_builder)?;
+	}
+
+	// writer
+	{
+		let writer = cx.empty_object();
+
+		let write_all = JsFunction::new(cx, write::write_all)?;
+		writer.set(cx, "write_all", write_all)?;
+
+		let finish = JsFunction::new(cx, write::finish)?;
+		writer.set(cx, "finish", finish)?;
+
+		exports.set(cx, "writer", writer)?;
 	}
 
 	Ok(())
