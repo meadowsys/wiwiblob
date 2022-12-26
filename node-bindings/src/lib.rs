@@ -61,5 +61,34 @@ fn init(mut cx: ModuleContext) -> NeonResult<()> {
 		exports.set(cx, "writer", writer)?;
 	}
 
+	// reader_builder
+	{
+		let reader_builder = cx.empty_object();
+
+		let verify = JsFunction::new(cx, read::verify)?;
+		reader_builder.set(cx, "verify", verify)?;
+
+		let build = JsFunction::new(cx, read::build)?;
+		reader_builder.set(cx, "build", build)?;
+
+		exports.set(cx, "reader_builder", reader_builder)?;
+	}
+
+	// reader
+	{
+		let reader = cx.empty_object();
+
+		let get_filename = JsFunction::new(cx, read::get_filename)?;
+		reader.set(cx, "get_filename", get_filename)?;
+
+		let get_owner = JsFunction::new(cx, read::get_owner)?;
+		reader.set(cx, "get_owner", get_owner)?;
+
+		let read_exact_to_new_buffer = JsFunction::new(cx, read::read_exact_to_new_buffer)?;
+		reader.set(cx, "read_exact_to_new_buffer", read_exact_to_new_buffer)?;
+
+		exports.set(cx, "reader", reader)?;
+	}
+
 	Ok(())
 }
