@@ -4,6 +4,8 @@ use std::io::Read;
 use std::io::Write;
 use std::io::Seek;
 use std::io::SeekFrom;
+use std::time::SystemTime;
+use std::time::UNIX_EPOCH;
 use super::error::Error;
 use super::FileMeta;
 use tempfile::spooled_tempfile;
@@ -58,7 +60,16 @@ pub struct Writer {
 }
 
 impl Writer {
-	pub fn from_builder(builder: WriterBuilder) -> Result<Self> {
+	pub fn from_builder(mut builder: WriterBuilder) -> Result<Self> {
+		let current_time = SystemTime::now()
+			.duration_since(UNIX_EPOCH)?
+			.as_nanos()
+			.to_string();
+		builder.set_other_meta("__wiwiblob_time_saved".into(), current_time);
+
+		// redeclare to get rid of mut
+		let builder = builder;
+
 		let WriterBuilder { dir, filemeta, spoolsize } = builder;
 		let FileMeta { filename, owner, other_meta } = filemeta;
 
