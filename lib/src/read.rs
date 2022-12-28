@@ -138,6 +138,14 @@ impl Reader {
 	pub fn get_owner(&self) -> Option<&str> {
 		self.filemeta.owner.as_deref()
 	}
+
+	pub fn get_other_meta(&self, k: &str) -> Option<&Vec<String>> {
+		self.filemeta.other_meta.get(k)
+	}
+
+	pub fn get_other_meta_iter(&self) -> std::collections::hash_map::Iter<'_, String, Vec<String>> {
+		self.filemeta.other_meta.iter()
+	}
 }
 
 impl Read for Reader {
