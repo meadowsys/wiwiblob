@@ -1,5 +1,4 @@
 use neon::prelude::*;
-use neon::types::buffer::TypedArray;
 use std::cell::RefCell;
 use std::io::Read;
 use wiwibloblib::read::Reader as RawReader;
