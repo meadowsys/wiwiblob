@@ -23,7 +23,7 @@ declare namespace native {
 	export namespace reader {
 		/* TODO promisify? */ export function get_filename(reader: Reader): string | undefined;
 		/* TODO promisify? */ export function get_owner(reader: Reader): string | undefined;
-		/* TODO promisify? */ export function read_to_new_buffer(reader: Reader, bufsize: number): [Buffer, number];
+		/* TODO promisify? */ export function read_to_new_buffer(reader: Reader, bufsize: number): [buf: Buffer, read_bytes: number];
 	}
 
 	export namespace writer_builder {
