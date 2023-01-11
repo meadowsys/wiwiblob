@@ -21,6 +21,7 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 			let reader = native.reader_builder.build(reader_builder);
 
 			let stream = new Readable({
+				encoding: "binary",
 				read(size) {
 					let read_bytes = 1;
 					let buf: Buffer;
@@ -40,9 +41,15 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 						}
 					} while (size > 0 && read_bytes > 0);
 				}
-			});
+			}) as Readable & {
+				get_filename: typeof get_filename;
+				get_owner: typeof get_owner;
+			};
 
-			return { get_filename, get_owner, stream };
+			stream.get_filename = get_filename;
+			stream.get_owner = get_owner;
+
+			return stream;
 
 			function get_filename() {
 				return native.reader.get_filename(reader);
@@ -72,14 +79,55 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 		function build() {
 			let writer = native.writer_builder.build(writer_builder);
 
-			return { write_all, finish };
+			let hash: string | undefined = undefined;
 
-			function write_all(buf: Buffer) {
-				native.writer.write_all(writer, buf);
-			}
+			const write: Writable["_write"] = (chunk, encoding, callback) => {
+				if (encoding !== "binary") return callback(new Error("only `binary` encoding supported"));
 
-			function finish() {
-				return native.writer.finish(writer);
+				try {
+					native.writer.write_all(writer, chunk);
+					callback();
+				} catch (err: any) {
+					callback(err);
+				}
+			};
+
+			let stream = new Writable({
+				defaultEncoding: "binary",
+				write,
+				writev(chunks, callback) {
+					// recursively call `write`
+
+					let i = 0;
+					const process_next: typeof callback = (err) => {
+						if (err) return callback(err);
+
+						let next_chunk = chunks[i++];
+						if (!next_chunk) return callback();
+
+						write(next_chunk.chunk, next_chunk.encoding, process_next);
+					}
+					process_next();
+				},
+				final(callback) {
+					try {
+						hash = native.writer.finish(writer);
+						callback();
+					} catch (err: any) {
+						callback(err);
+					}
+				}
+			}) as Writable & {
+				get_hash: typeof get_hash
+			};
+
+			stream.get_hash = get_hash;
+
+			return stream;
+
+			function get_hash() {
+				if (hash) return hash;
+				throw new Error("stream not finalised yet, cannot get hash yet");
 			}
 		}
 	}
