@@ -33,7 +33,10 @@ declare namespace native {
 	}
 
 	export namespace writer {
-		/* TODO promisify? */ export function write_all(writer: Writer, buf: Buffer): void;
+		/**
+		 * **WARNING**: **DO NOT** call this function again until the returned promise has resolved
+		 */
+		export function write_all(writer: Writer, buf: Buffer): Promise<void>;
 		/* TODO promisify? */ export function finish(writer: Writer): string;
 	}
 }

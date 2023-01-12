@@ -80,16 +80,23 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 			let writer = native.writer_builder.build(writer_builder);
 
 			let hash: string | undefined = undefined;
+			let previous_promise: Promise<void> = Promise.resolve();
 
 			const write: Writable["_write"] = (chunk, encoding, callback) => {
 				if (encoding !== "binary") return callback(new Error("only `binary` encoding supported"));
 
-				try {
-					native.writer.write_all(writer, chunk);
-					callback();
-				} catch (err: any) {
-					callback(err);
-				}
+				let promise = previous_promise;
+				previous_promise.then(() => {
+					promise = new Promise(res => {
+						previous_promise = native.writer.write_all(writer, chunk);
+						previous_promise
+							.then(() => {
+								callback();
+								res();
+							})
+							.catch(err => callback(err));
+					});
+				});
 			};
 
 			let stream = new Writable({

@@ -69,24 +69,37 @@ pub fn build(mut cx: FunctionContext) -> JsResult<JsBox<Writer>> {
 	}))
 }
 
-pub fn write_all(mut cx: FunctionContext) -> JsResult<JsUndefined> {
+pub fn write_all(mut cx: FunctionContext) -> JsResult<JsPromise> {
 	let cx = &mut cx;
 
-	let writer = cx.argument::<JsBox<Writer>>(0)?;
-	let mut writer_opt = writer.inner.borrow_mut();
+	let writer_arg = cx.argument::<JsBox<Writer>>(0)?;
+	let mut writer_opt = writer_arg.inner.borrow_mut();
 	let mut writer = writer_opt.take().unwrap();
-	let buf = cx.argument::<JsBuffer>(1)?;
+	drop(writer_opt);
+	let writer_arg = writer_arg.root(cx);
+	let buf = cx.argument::<JsBuffer>(1)?.as_slice(cx).to_vec();
 
-	let res = writer.write_all(buf.as_slice(cx));
-	*writer_opt = Some(writer);
+	let promise = cx.task(move || {
+		let res = writer.write_all(&buf);
+		(res, writer)
+	}).promise(|mut cx, (res, writer)| {
+		let cx = &mut cx;
 
-	match res {
-		Ok(_) => { Ok(cx.undefined()) }
-		Err(e) => {
-			let e = cx.error(e.to_string())?;
-			cx.throw(e)?
+		match res {
+			Ok(_) => {
+				let writer_arg = writer_arg.into_inner(cx);
+				let mut writer_opt = writer_arg.inner.borrow_mut();
+				*writer_opt = Some(writer);
+				Ok(cx.undefined())
+			}
+			Err(e) => {
+				let e = cx.error(e.to_string())?; //root
+				cx.throw(e)?
+			}
 		}
-	}
+	});
+
+	Ok(promise)
 }
 
 pub fn finish(mut cx: FunctionContext) -> JsResult<JsString> {
