@@ -37,7 +37,7 @@ declare namespace native {
 		 * **WARNING**: **DO NOT** call this function again until the returned promise has resolved
 		 */
 		export function write_all(writer: Writer, buf: Buffer): Promise<void>;
-		/* TODO promisify? */ export function finish(writer: Writer): string;
+		export function finish(writer: Writer): Promise<string>;
 	}
 }
 

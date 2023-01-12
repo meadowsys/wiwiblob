@@ -102,18 +102,25 @@ pub fn write_all(mut cx: FunctionContext) -> JsResult<JsPromise> {
 	Ok(promise)
 }
 
-pub fn finish(mut cx: FunctionContext) -> JsResult<JsString> {
+pub fn finish(mut cx: FunctionContext) -> JsResult<JsPromise> {
 	let cx = &mut cx;
 
 	let writer = cx.argument::<JsBox<Writer>>(0)?;
 	let mut writer_opt = writer.inner.borrow_mut();
 	let writer = writer_opt.take().unwrap();
 
-	match writer.finish() {
-		Ok(hash) => { Ok(cx.string(hash)) }
-		Err(e) => {
-			let e = cx.error(e.to_string())?;
-			cx.throw(e)?
-		}
-	}
+	let promise = cx.task(|| writer.finish())
+		.promise(|mut cx, res| {
+			let cx = &mut cx;
+
+			match res {
+				Ok(hash) => { Ok(cx.string(hash)) }
+				Err(e) => {
+					let e = cx.error(e.to_string())?;
+					cx.throw(e)?
+				}
+			}
+		});
+
+	Ok(promise)
 }

@@ -115,12 +115,10 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 					process_next();
 				},
 				final(callback) {
-					try {
-						hash = native.writer.finish(writer);
+					native.writer.finish(writer).then(h => {
+						hash = h;
 						callback();
-					} catch (err: any) {
-						callback(err);
-					}
+					}).catch(err => callback(err));
 				}
 			}) as Writable & {
 				get_hash: typeof get_hash
