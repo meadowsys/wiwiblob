@@ -93,7 +93,7 @@ pub fn write_all(mut cx: FunctionContext) -> JsResult<JsPromise> {
 				Ok(cx.undefined())
 			}
 			Err(e) => {
-				let e = cx.error(e.to_string())?; //root
+				let e = cx.error(e.to_string())?;
 				cx.throw(e)?
 			}
 		}
