@@ -8,15 +8,15 @@ declare namespace native {
 	export type WriterBuilder = Nominal<WriterBuilder>;
 
 	export namespace wiwiblob {
-		/* TODO promisify? */ export function new_wiwiblob(dir: string): WiwiBlob;
-		/* TODO promisify? */ export function new_wiwiblob_with_spoolsize(dir: string, spoolsize: number): WiwiBlob;
-		/* TODO promisify? */ export function reader_builder(wiwiblob: WiwiBlob, hash: string): ReaderBuilder;
-		/* TODO promisify? */ export function writer_builder(wiwiblob: WiwiBlob): WriterBuilder;
-		/* TODO promisify? */ export function writer_builder_with_spoolsize(wiwiblob: WiwiBlob, spoolsize: number): WriterBuilder;
+		export function new_wiwiblob(dir: string): WiwiBlob;
+		export function new_wiwiblob_with_spoolsize(dir: string, spoolsize: number): WiwiBlob;
+		export function reader_builder(wiwiblob: WiwiBlob, hash: string): ReaderBuilder;
+		export function writer_builder(wiwiblob: WiwiBlob): WriterBuilder;
+		export function writer_builder_with_spoolsize(wiwiblob: WiwiBlob, spoolsize: number): WriterBuilder;
 	}
 
 	export namespace reader_builder {
-		/* TODO promisify? */ export function verify(reader_builder: ReaderBuilder, verify: boolean): void;
+		export function verify(reader_builder: ReaderBuilder, verify: boolean): void;
 		/* TODO promisify? */ export function build(reader_builder: ReaderBuilder): Reader;
 	}
 
