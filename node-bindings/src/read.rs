@@ -27,24 +27,32 @@ pub fn verify(mut cx: FunctionContext) -> JsResult<JsUndefined> {
 	Ok(cx.undefined())
 }
 
-pub fn build(mut cx: FunctionContext) -> JsResult<JsBox<Reader>> {
+pub fn build(mut cx: FunctionContext) -> JsResult<JsPromise> {
 	let cx = &mut cx;
 
 	let reader_builder = cx.argument::<JsBox<ReaderBuilder>>(0)?
 		.inner
 		.borrow()
 		.clone();
-	let reader = match reader_builder.build() {
-		Ok(reader) => { reader }
-		Err(e) => {
-			let e = cx.error(e.to_string())?;
-			cx.throw(e)?
-		}
-	};
 
-	Ok(cx.boxed(Reader {
-		inner: RefCell::new(reader)
-	}))
+	let promise = cx.task(|| reader_builder.build())
+		.promise(|mut cx, res| {
+			let cx = &mut cx;
+
+			let reader = match res {
+				Ok(reader) => { reader }
+				Err(e) => {
+					let e = cx.error(e.to_string())?;
+					cx.throw(e)?
+				}
+			};
+
+			Ok(cx.boxed(Reader {
+				inner: RefCell::new(reader)
+			}))
+		});
+
+	Ok(promise)
 }
 
 pub fn get_filename(mut cx: FunctionContext) -> JsResult<JsValue> {

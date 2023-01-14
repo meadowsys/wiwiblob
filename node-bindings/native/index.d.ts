@@ -17,7 +17,7 @@ declare namespace native {
 
 	export namespace reader_builder {
 		export function verify(reader_builder: ReaderBuilder, verify: boolean): void;
-		/* TODO promisify? */ export function build(reader_builder: ReaderBuilder): Reader;
+		export function build(reader_builder: ReaderBuilder): Promise<Reader>;
 	}
 
 	export namespace reader {
