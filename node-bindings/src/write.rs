@@ -49,24 +49,30 @@ pub fn set_owner(mut cx: FunctionContext) -> JsResult<JsUndefined> {
 	}
 }
 
-pub fn build(mut cx: FunctionContext) -> JsResult<JsBox<Writer>> {
+pub fn build(mut cx: FunctionContext) -> JsResult<JsPromise> {
 	let cx = &mut cx;
 
 	let writer_builder = cx.argument::<JsBox<WriterBuilder>>(0)?
 		.inner
 		.borrow()
 		.clone();
-	let writer = match writer_builder.build() {
-		Ok(writer) => { writer }
-		Err(e) => {
-			let e = cx.error(e.to_string())?;
-			cx.throw(e)?
-		}
-	};
 
-	Ok(cx.boxed(Writer {
-		inner: RefCell::new(Some(writer))
-	}))
+	let promise = cx.task(|| writer_builder.build())
+		.promise(|mut cx, res| {
+			let writer = match res {
+				Ok(writer) => { writer }
+				Err(e) => {
+					let e = cx.error(e.to_string())?;
+					cx.throw(e)?
+				}
+			};
+
+			Ok(cx.boxed(Writer {
+				inner: RefCell::new(Some(writer))
+			}))
+		});
+
+	Ok(promise)
 }
 
 pub fn write_all(mut cx: FunctionContext) -> JsResult<JsPromise> {

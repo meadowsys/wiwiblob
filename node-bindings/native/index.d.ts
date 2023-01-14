@@ -29,7 +29,7 @@ declare namespace native {
 	export namespace writer_builder {
 		/* TODO promisify? */ export function set_filename(writer_builder: WriterBuilder, filename: string): void;
 		/* TODO promisify? */ export function set_owner(writer_builder: WriterBuilder, owner: string): void;
-		/* TODO promisify? */ export function build(writer_builder: WriterBuilder): Writer;
+		export function build(writer_builder: WriterBuilder): Promise<Writer>;
 	}
 
 	export namespace writer {
