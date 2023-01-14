@@ -18,10 +18,16 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 		}
 
 		function build() {
-			let reader = native.reader_builder.build(reader_builder);
+			let reader: native.Reader;
 
 			let stream = new Readable({
 				encoding: "binary",
+				construct(callback) {
+					native.reader_builder.build(reader_builder).then(r => {
+						reader = r;
+						callback();
+					}).catch(err => callback(err));
+				},
 				read(size) {
 					let read_bytes = 1;
 					let buf: Buffer;
@@ -77,7 +83,7 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 		}
 
 		function build() {
-			let writer = native.writer_builder.build(writer_builder);
+			let writer: native.Writer;
 
 			let hash: string | undefined = undefined;
 			let previous_promise: Promise<void> = Promise.resolve();
@@ -99,6 +105,12 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 
 			let stream = new Writable({
 				defaultEncoding: "binary",
+				construct(callback) {
+					native.writer_builder.build(writer_builder).then(w => {
+						writer = w;
+						callback();
+					}).catch(err => callback(err));
+				},
 				write,
 				writev(chunks, callback) {
 					// recursively call `write`
