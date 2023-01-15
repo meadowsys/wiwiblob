@@ -1,4 +1,12 @@
+*.log*
+.env
 /node_modules
 /node-bindings/build
 /node-bindings/node_modules
+/server/.cache
+/server/.nitro
+/server/.nuxt
+/server/.output
+/server/dist
+/server/node_modules
 /target

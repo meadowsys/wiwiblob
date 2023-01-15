@@ -1,3 +1,4 @@
 ---
 members:
 - node-bindings
+- server
