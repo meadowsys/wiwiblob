@@ -9,6 +9,6 @@
 		"build:ts": "tsc"
 	},
 	"devDependencies": {
-		"@types/node": "^18.11.17"
+		"@types/node": "^18.11.18"
 	}
 }
