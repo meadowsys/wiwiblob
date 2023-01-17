@@ -1,7 +1,13 @@
-import native from "../native/index.js";
+import _native, { Reader, Writer } from "../native/index.js";
 import { Readable, Writable } from "stream";
 
 export function new_wiwiblob(dir: string, spoolsize?: number) {
+	return new_wiwiblob_with_native_path(undefined!, dir, spoolsize);
+}
+
+export function new_wiwiblob_with_native_path(native_path: string, dir: string, spoolsize?: number) {
+	const native = _native(native_path);
+
 	let wiwiblob = spoolsize
 		? native.wiwiblob.new_wiwiblob_with_spoolsize(dir, spoolsize)
 		: native.wiwiblob.new_wiwiblob(dir);
@@ -18,7 +24,7 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 		}
 
 		function build() {
-			let reader: native.Reader;
+			let reader: Reader;
 
 			let stream = new Readable({
 				encoding: "binary",
@@ -83,7 +89,7 @@ export function new_wiwiblob(dir: string, spoolsize?: number) {
 		}
 
 		function build() {
-			let writer: native.Writer;
+			let writer: Writer;
 
 			let hash: string | undefined = undefined;
 			let previous_promise: Promise<void> = Promise.resolve();

@@ -1,4 +1,5 @@
 {
+	"name": "wiwiblob",
 	"private": true,
 	"type": "module",
 	"main": "./build/index.js",
