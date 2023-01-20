@@ -56,10 +56,12 @@ export function new_wiwiblob_with_native_path(native_path: string, dir: string, 
 			}) as Readable & {
 				get_filename: typeof get_filename;
 				get_owner: typeof get_owner;
+				get_other_meta: typeof get_other_meta;
 			};
 
 			stream.get_filename = get_filename;
 			stream.get_owner = get_owner;
+			stream.get_other_meta = get_other_meta;
 
 			return stream;
 
@@ -70,6 +72,10 @@ export function new_wiwiblob_with_native_path(native_path: string, dir: string, 
 			function get_owner() {
 				return native.reader.get_owner(reader);
 			}
+
+			function get_other_meta(k: string) {
+				return native.reader.get_other_meta(reader, k);
+			}
 		}
 	}
 
@@ -78,7 +84,7 @@ export function new_wiwiblob_with_native_path(native_path: string, dir: string, 
 			? native.wiwiblob.writer_builder_with_spoolsize(wiwiblob, spoolsize)
 			: native.wiwiblob.writer_builder(wiwiblob);
 
-		return { set_filename, set_owner, build };
+		return { set_filename, set_owner, set_other_meta, build };
 
 		function set_filename(filename: string) {
 			native.writer_builder.set_filename(writer_builder, filename);
@@ -86,6 +92,10 @@ export function new_wiwiblob_with_native_path(native_path: string, dir: string, 
 
 		function set_owner(owner: string) {
 			native.writer_builder.set_owner(writer_builder, owner);
+		}
+
+		function set_other_meta(k: string, v: string) {
+			native.writer_builder.set_other_meta(writer_builder, k, v);
 		}
 
 		function build() {
