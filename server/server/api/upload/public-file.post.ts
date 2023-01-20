@@ -1,6 +1,8 @@
 import { use_wiwiblob } from "~/composables/use_wiwiblob";
 import { readMultipartFormData } from "h3";
 
+export const filetype_metakey = "filetype";
+
 export default defineEventHandler(async event => {
 	let wiwiblob = use_wiwiblob();
 
@@ -21,7 +23,9 @@ export default defineEventHandler(async event => {
 	for (let file of formdata) {
 		let writer_builder = wiwiblob.writer_builder();
 
+		console.log(file.type);
 		if (file.filename) writer_builder.set_filename(file.filename);
+		if (file.type) writer_builder.set_other_meta(file.type, file.type);
 		let writer = writer_builder.build();
 
 		promises.push(new Promise((res, rej) => {
