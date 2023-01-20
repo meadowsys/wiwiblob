@@ -1,5 +1,8 @@
 lockfileVersion: 5.4
 
+overrides:
+  h3: github:autumnblazey/h3#7ca24273bf53eb4520f29e72464fbc2230b5baec
+
 importers:
 
   .:
@@ -571,11 +574,11 @@ packages:
       defu: 6.1.1
       esbuild: 0.15.18
       escape-string-regexp: 5.0.0
-      estree-walker: 3.0.2
+      estree-walker: 3.0.3
       externality: 1.0.0
       fs-extra: 10.1.0
       get-port-please: 2.6.1
-      h3: 1.0.2
+      h3: github.com/autumnblazey/h3/7ca24273bf53eb4520f29e72464fbc2230b5baec
       knitwork: 1.0.0
       magic-string: 0.26.7
       mlly: 1.1.0
@@ -769,31 +772,31 @@ packages:
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
     dev: true
 
-  /@unhead/dom/1.0.15:
-    resolution: {integrity: sha512-W3P9eGazfQPMZTG4ryb5oOA02Z4o16Jxo8DAihF/7Xmg/FVYY5Up9p9et7Nbb6AKNgt1PEz3Sp0xBaw+F6Uyjw==}
+  /@unhead/dom/1.0.17:
+    resolution: {integrity: sha512-iLVBQ1ck8r8U+n1Rdk93ry6NP0jgRXuJwrujXlYUFkrvbkXl08rTfyyXHT+AkA1aZgFLS9KtYtbEhwzNeWfZtg==}
     dependencies:
-      '@unhead/schema': 1.0.15
+      '@unhead/schema': 1.0.17
     dev: true
 
-  /@unhead/schema/1.0.15:
-    resolution: {integrity: sha512-aWgHDHcemcx20zZun2hCFvZC6Ob4h14D4puhknuQoMkMOZcxh2ffYoJHb6mS3TeQRwAXCOsSFIHAgwIbayjk0w==}
+  /@unhead/schema/1.0.17:
+    resolution: {integrity: sha512-Vfc6HWcZAzibzlzBMNhVTOC7AYqvq3QMIY6VF7myowl4xbSiPLOmp63ZWAXKavYjHDchAJXvL/PF+6sDaIeCLQ==}
     dependencies:
       '@zhead/schema': 1.0.9
       hookable: 5.4.2
     dev: true
 
-  /@unhead/ssr/1.0.15:
-    resolution: {integrity: sha512-WNFljr+HaWdrBVYyKcgLXIk5EldPSKEVJlFbo2ixmSVGnFlqMHMCui/ZrfMLG1QvvFw0ZkXonapkEc/S6loSCQ==}
+  /@unhead/ssr/1.0.17:
+    resolution: {integrity: sha512-+Ghf7RO7GDdS1AR38FFpmn0ZmhlgYxmAD6xg79Zgen6blmlfYVsWTL78rjnkkBc6EB9qvnGVAcqYtjO+KwjljA==}
     dependencies:
-      '@unhead/schema': 1.0.15
+      '@unhead/schema': 1.0.17
     dev: true
 
-  /@unhead/vue/1.0.15_vue@3.2.45:
-    resolution: {integrity: sha512-D2NQH8fBKdYgTdIDrarx24qDEblgLIwzPDeAY36PyP6ib8oG6oaI+5lrpMG+NtQ7k9LBqL5d6mQgYn/02kdjZg==}
+  /@unhead/vue/1.0.17_vue@3.2.45:
+    resolution: {integrity: sha512-yTz8yKMWpseWXSL449vIm0lAIxZAYSLiWRBhUG5vcAPo6L39fyKsBXiUOHt+ScYLAQaoxT2gEEIcsbHMxv5pmQ==}
     peerDependencies:
       vue: '>=2.7 || >=3'
     dependencies:
-      '@unhead/schema': 1.0.15
+      '@unhead/schema': 1.0.17
       hookable: 5.4.2
       vue: 3.2.45
     dev: true
@@ -874,7 +877,7 @@ packages:
       '@vue/compiler-sfc': 3.2.45
       '@vue/reactivity': 3.2.45
       '@vue/shared': 3.2.45
-      minimatch: 5.1.4
+      minimatch: 5.1.6
       vue-template-compiler: 2.7.14
     dev: true
 
@@ -998,10 +1001,10 @@ packages:
     peerDependencies:
       vue: '>=2.7 || >=3'
     dependencies:
-      '@unhead/dom': 1.0.15
-      '@unhead/schema': 1.0.15
-      '@unhead/ssr': 1.0.15
-      '@unhead/vue': 1.0.15_vue@3.2.45
+      '@unhead/dom': 1.0.17
+      '@unhead/schema': 1.0.17
+      '@unhead/ssr': 1.0.17
+      '@unhead/vue': 1.0.17_vue@3.2.45
       vue: 3.2.45
     dev: true
 
@@ -1123,7 +1126,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.4
-      caniuse-lite: 1.0.30001445
+      caniuse-lite: 1.0.30001446
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -1187,7 +1190,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001445
+      caniuse-lite: 1.0.30001446
       electron-to-chromium: 1.4.284
       node-releases: 2.0.8
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -1237,13 +1240,13 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.21.4
-      caniuse-lite: 1.0.30001445
+      caniuse-lite: 1.0.30001446
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
 
-  /caniuse-lite/1.0.30001445:
-    resolution: {integrity: sha512-8sdQIdMztYmzfTMO6KfLny878Ln9c2M0fc7EH60IjlP4Dc4PiCy7K2Vl3ITmWgOyPgVQKa5x+UP/KqFsxj4mBg==}
+  /caniuse-lite/1.0.30001446:
+    resolution: {integrity: sha512-fEoga4PrImGcwUUGEol/PoFCSBnSkA9drgdkxXkJLsUBOnJ8rs3zDv6ApqYXGQFOyMPsjh79naWhF4DAxbF8rw==}
     dev: true
 
   /chalk/2.4.2:
@@ -1939,8 +1942,10 @@ packages:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
     dev: true
 
-  /estree-walker/3.0.2:
-    resolution: {integrity: sha512-C03BvXCQIH/po+PNPONx/zSM9ziPr9weX8xNhYb/IJtdJ9z+L4z9VKPTB+UTHdmhnIopA2kc419ueyVyHVktwA==}
+  /estree-walker/3.0.3:
+    resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
+    dependencies:
+      '@types/estree': 1.0.0
     dev: true
 
   /etag/1.8.1:
@@ -2144,7 +2149,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 5.1.4
+      minimatch: 5.1.6
       once: 1.4.0
     dev: true
 
@@ -2173,15 +2178,6 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       duplexer: 0.1.2
-    dev: true
-
-  /h3/1.0.2:
-    resolution: {integrity: sha512-25QqjQMz8pX1NI2rZ/ziNT9B8Aog7jmu2a0o8Qm9kKoH3zOhE+2icVs069h6DEp0g1Dst1+zKfRdRYcK0MogJA==}
-    dependencies:
-      cookie-es: 0.5.0
-      destr: 1.2.2
-      radix3: 1.0.0
-      ufo: 1.0.1
     dev: true
 
   /has-flag/3.0.0:
@@ -2436,8 +2432,8 @@ packages:
       graceful-fs: 4.2.10
     dev: true
 
-  /klona/2.0.5:
-    resolution: {integrity: sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==}
+  /klona/2.0.6:
+    resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
     engines: {node: '>= 8'}
     dev: true
 
@@ -2470,8 +2466,8 @@ packages:
       ufo: 1.0.1
     dev: true
 
-  /local-pkg/0.4.2:
-    resolution: {integrity: sha512-mlERgSPrbxU3BP4qBqAvvwlgW4MTg78iwJdGGnv7kibKjWcJksrG3t6LB5lXI93wXRDvG4NpUgJFmTG4T6rdrg==}
+  /local-pkg/0.4.3:
+    resolution: {integrity: sha512-SFppqq5p42fe2qcZQqqEOiVRXl+WCP1MdT6k7BDEW1j++sp5fIY+/fdRQitvKgB5BrBcmrs5m/L0v2FrU5MY1g==}
     engines: {node: '>=14'}
     dev: true
 
@@ -2636,8 +2632,8 @@ packages:
       brace-expansion: 1.1.11
     dev: true
 
-  /minimatch/5.1.4:
-    resolution: {integrity: sha512-U0iNYXt9wALljzfnGkhFSy5sAC6/SCR3JrHrlsdJz4kF8MvhTRQNiC59iUi1iqsitV7abrNAJWElVL9pdnoUgw==}
+  /minimatch/5.1.6:
+    resolution: {integrity: sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==}
     engines: {node: '>=10'}
     dependencies:
       brace-expansion: 2.0.1
@@ -2743,12 +2739,12 @@ packages:
       fs-extra: 10.1.0
       globby: 13.1.3
       gzip-size: 7.0.0
-      h3: 1.0.2
+      h3: github.com/autumnblazey/h3/7ca24273bf53eb4520f29e72464fbc2230b5baec
       hookable: 5.4.2
       http-proxy: 1.18.1
       is-primitive: 3.0.1
       jiti: 1.16.2
-      klona: 2.0.5
+      klona: 2.0.6
       knitwork: 1.0.0
       listhen: 1.0.1
       mime: 3.0.0
@@ -2876,7 +2872,7 @@ packages:
       '@nuxt/schema': 3.0.0
       '@nuxt/ui-templates': 1.1.0
       '@nuxt/vite-builder': 3.0.0_prq2uz4lho2pwp6irk4cfkrxwu
-      '@unhead/ssr': 1.0.15
+      '@unhead/ssr': 1.0.17
       '@vue/reactivity': 3.2.45
       '@vue/shared': 3.2.45
       '@vueuse/head': 1.0.22_vue@3.2.45
@@ -2885,10 +2881,10 @@ packages:
       defu: 6.1.1
       destr: 1.2.2
       escape-string-regexp: 5.0.0
-      estree-walker: 3.0.2
+      estree-walker: 3.0.3
       fs-extra: 10.1.0
       globby: 13.1.3
-      h3: 1.0.2
+      h3: github.com/autumnblazey/h3/7ca24273bf53eb4520f29e72464fbc2230b5baec
       hash-sum: 2.0.0
       hookable: 5.4.2
       knitwork: 1.0.0
@@ -2906,7 +2902,7 @@ packages:
       ultrahtml: 1.2.0
       unctx: 2.1.1
       unenv: 1.0.1
-      unhead: 1.0.15
+      unhead: 1.0.17
       unimport: 1.2.0
       unplugin: 1.0.1
       untyped: 1.2.2
@@ -3444,7 +3440,7 @@ packages:
   /readdir-glob/1.1.2:
     resolution: {integrity: sha512-6RLVvwJtVwEDfPdn6X6Ille4/lxGl0ATOY4FN/B9nxQcgOazvvI0nodiD19ScKq0PvA/29VpaOQML36o5IzZWA==}
     dependencies:
-      minimatch: 5.1.4
+      minimatch: 5.1.6
     dev: true
 
   /readdirp/3.6.0:
@@ -3873,7 +3869,7 @@ packages:
     resolution: {integrity: sha512-RffJlpvLOtolWsn0fxXsuSDfwiWcR6cyuykw2e0+zAggvGW1SesXt9WxIWlWpJhwVCZD/WlxxLqKLS50Q0CkWA==}
     dependencies:
       acorn: 8.8.1
-      estree-walker: 3.0.2
+      estree-walker: 3.0.3
       magic-string: 0.26.7
       unplugin: 1.0.1
     dev: true
@@ -3887,11 +3883,11 @@ packages:
       pathe: 1.0.0
     dev: true
 
-  /unhead/1.0.15:
-    resolution: {integrity: sha512-XNGYe/9h/gycVf15CMJXl7Mycgrjcp8yOOxe/QtcA/V5/e1KXOOKXvsXDui9tabWEh2s/GejZS0TtUj5OTfusQ==}
+  /unhead/1.0.17:
+    resolution: {integrity: sha512-JjKjFxKwsmsAl/nLu3uTqd7bSTGOu4bhDj2KSYGBBfTVBmzJVK8lC/Aj0q/1au5g4NH4la+ulbmo3oWU4BqICw==}
     dependencies:
-      '@unhead/dom': 1.0.15
-      '@unhead/schema': 1.0.15
+      '@unhead/dom': 1.0.17
+      '@unhead/schema': 1.0.17
       hookable: 5.4.2
     dev: true
 
@@ -3901,7 +3897,7 @@ packages:
       '@rollup/pluginutils': 5.0.2
       escape-string-regexp: 5.0.0
       fast-glob: 3.2.12
-      local-pkg: 0.4.2
+      local-pkg: 0.4.3
       magic-string: 0.27.0
       mlly: 1.1.0
       pathe: 1.0.0
@@ -3919,7 +3915,7 @@ packages:
       '@rollup/pluginutils': 5.0.2_rollup@2.79.1
       escape-string-regexp: 5.0.0
       fast-glob: 3.2.12
-      local-pkg: 0.4.2
+      local-pkg: 0.4.3
       magic-string: 0.27.0
       mlly: 1.1.0
       pathe: 1.0.0
@@ -3951,7 +3947,7 @@ packages:
       anymatch: 3.1.3
       chokidar: 3.5.3
       destr: 1.2.2
-      h3: 1.0.2
+      h3: github.com/autumnblazey/h3/7ca24273bf53eb4520f29e72464fbc2230b5baec
       ioredis: 5.2.5
       listhen: 1.0.1
       mkdir: 0.0.2
@@ -4288,4 +4284,15 @@ packages:
       archiver-utils: 2.1.0
       compress-commons: 4.1.1
       readable-stream: 3.6.0
+    dev: true
+
+  github.com/autumnblazey/h3/7ca24273bf53eb4520f29e72464fbc2230b5baec:
+    resolution: {tarball: https://codeload.github.com/autumnblazey/h3/tar.gz/7ca24273bf53eb4520f29e72464fbc2230b5baec}
+    name: h3
+    version: 1.0.2
+    dependencies:
+      cookie-es: 0.5.0
+      destr: 1.2.2
+      radix3: 1.0.0
+      ufo: 1.0.1
     dev: true
