@@ -94,10 +94,6 @@ impl Writer {
 			xz.write_all(owner.as_bytes())?;
 		}
 
-		let data_bytes = super::DATA;
-		xz.write_all(&[data_bytes.len() as u8])?;
-		xz.write_all(data_bytes)?;
-
 		let other_meta_bytes = super::OTHER_META;
 		for (key, value_vec) in other_meta.into_iter() {
 			for value in value_vec {
@@ -111,6 +107,10 @@ impl Writer {
 				xz.write_all(value.as_bytes())?;
 			}
 		}
+
+		let data_bytes = super::DATA;
+		xz.write_all(&[data_bytes.len() as u8])?;
+		xz.write_all(data_bytes)?;
 
 		Ok(Writer { dir, xz })
 	}
