@@ -24,23 +24,23 @@ export function new_wiwiblob_with_native_path(native_path: string, dir: string, 
 		}
 
 		function build() {
-			let reader: Reader;
+			let reader = native.reader_builder.build(reader_builder);
 
 			let stream = new Readable({
 				encoding: "binary",
 				construct(callback) {
-					native.reader_builder.build(reader_builder).then(r => {
-						reader = r;
-						callback();
-					}).catch(err => callback(err));
+					reader.then(
+						() => callback(),
+						err => callback(err)
+					);
 				},
-				read(size) {
+				async read(size) {
 					let read_bytes = 1;
 					let buf: Buffer;
 
 					do {
 						try {
-							[buf, read_bytes] = native.reader.read_to_new_buffer(reader, size);
+							[buf, read_bytes] = native.reader.read_to_new_buffer(await reader, size);
 						} catch (err: any) {
 							this.destroy(err);
 							break;
@@ -65,16 +65,16 @@ export function new_wiwiblob_with_native_path(native_path: string, dir: string, 
 
 			return stream;
 
-			function get_filename() {
-				return native.reader.get_filename(reader);
+			async function get_filename() {
+				return native.reader.get_filename(await reader);
 			}
 
-			function get_owner() {
-				return native.reader.get_owner(reader);
+			async function get_owner() {
+				return native.reader.get_owner(await reader);
 			}
 
-			function get_other_meta(k: string) {
-				return native.reader.get_other_meta(reader, k);
+			async function get_other_meta(k: string) {
+				return native.reader.get_other_meta(await reader, k);
 			}
 		}
 	}
