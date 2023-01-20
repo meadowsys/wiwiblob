@@ -29,6 +29,7 @@ export type native = {
 	writer_builder: {
 		/* TODO promisify? */ set_filename(writer_builder: WriterBuilder, filename: string): void;
 		/* TODO promisify? */ set_owner(writer_builder: WriterBuilder, owner: string): void;
+		/* TODO promisify? */ set_other_meta(writer_builder: WriterBuilder, k: string, v: string): void;
 		build(writer_builder: WriterBuilder): Promise<Writer>;
 	};
 

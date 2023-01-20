@@ -49,6 +49,19 @@ pub fn set_owner(mut cx: FunctionContext) -> JsResult<JsUndefined> {
 	}
 }
 
+pub fn set_other_meta(mut cx: FunctionContext) -> JsResult<JsUndefined> {
+	let cx = &mut cx;
+
+	let writer_builder = cx.argument::<JsBox<WriterBuilder>>(0)?;
+	let mut writer_builder = writer_builder.inner.borrow_mut();
+
+	let k = cx.argument::<JsString>(1)?.value(cx);
+	let v = cx.argument::<JsString>(2)?.value(cx);
+
+	writer_builder.set_other_meta(k, v);
+	Ok(cx.undefined())
+}
+
 pub fn build(mut cx: FunctionContext) -> JsResult<JsPromise> {
 	let cx = &mut cx;
 

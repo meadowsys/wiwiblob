@@ -71,6 +71,9 @@ fn init(mut cx: ModuleContext) -> NeonResult<()> {
 		let set_owner = JsFunction::new(cx, write::set_owner)?;
 		writer_builder.set(cx, "set_owner", set_owner)?;
 
+		let set_other_meta = JsFunction::new(cx, write::set_other_meta)?;
+		writer_builder.set(cx, "set_other_meta", set_other_meta)?;
+
 		let build = JsFunction::new(cx, write::build)?;
 		writer_builder.set(cx, "build", build)?;
 
