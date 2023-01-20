@@ -19,12 +19,8 @@ if (process.env.NODE_ENV === "production") {
 	});
 } else {
 	const dev_path = path.resolve("./wiwibloblib.node");
-	if (!fs.existsSync(dev_path)){
-		fs.linkSync(
-			native_path,
-			dev_path
-		);
-	}
+	if (fs.existsSync(dev_path)) fs.rmSync(dev_path);
+	fs.linkSync(native_path, dev_path);
 }
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
