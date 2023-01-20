@@ -1,8 +1,3 @@
 {
-	"private": true,
-	"pnpm": {
-		"overrides": {
-			"h3": "github:autumnblazey/h3#7ca24273bf53eb4520f29e72464fbc2230b5baec"
-		}
-	}
+	"private": true
 }
