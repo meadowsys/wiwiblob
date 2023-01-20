@@ -45,5 +45,8 @@ export default defineEventHandler(async event => {
 	if (filename) setHeader(event, "content-disposition", `attachment; filename="${filename}"`);
 	else setHeader(event, "content-disposition", `attachment`);
 
+	// if this function hasn't thrown yet, then verification has succeeded
+	setHeader(event, "verify", "true");
+
 	return sendStream(event, reader);
 });
