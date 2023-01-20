@@ -27,7 +27,6 @@ export function new_wiwiblob_with_native_path(native_path: string, dir: string, 
 			let reader = await native.reader_builder.build(reader_builder);
 
 			let stream = new Readable({
-				encoding: "binary",
 				read(size) {
 					let read_bytes = 1;
 					let buf: Buffer;
