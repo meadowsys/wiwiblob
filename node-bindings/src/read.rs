@@ -83,6 +83,31 @@ pub fn get_owner(mut cx: FunctionContext) -> JsResult<JsValue> {
 	}
 }
 
+pub fn get_other_meta(mut cx: FunctionContext) -> JsResult<JsValue> {
+	let cx = &mut cx;
+
+	let reader = cx.argument::<JsBox<Reader>>(0)?;
+	let reader = reader.inner.borrow();
+	let k = cx.argument::<JsString>(1)?.value(cx);
+
+	let other_meta = reader.get_other_meta(&k);
+
+	match other_meta {
+		Some(vec) => {
+			let len = vec.len();
+			let array = JsArray::new(cx, len as u32);
+
+			for (i, v) in vec.iter().enumerate() {
+				let v = cx.string(v);
+				array.set(cx, i as u32, v)?;
+			}
+
+			Ok(array.upcast())
+		}
+		None => { Ok(cx.undefined().upcast())}
+	}
+}
+
 pub fn read_to_new_buffer(mut cx: FunctionContext) -> JsResult<JsArray> {
 	let cx = &mut cx;
 

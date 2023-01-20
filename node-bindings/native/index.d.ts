@@ -23,6 +23,7 @@ export type native = {
 	reader: {
 		/* TODO promisify? */ get_filename(reader: Reader): string | undefined;
 		/* TODO promisify? */ get_owner(reader: Reader): string | undefined;
+		/* TODO promisify? */ get_other_meta(reader: Reader, k: string): Array<string> | undefined;
 		/* TODO promisify? */ read_to_new_buffer(reader: Reader, bufsize: number): [buf: Buffer, read_bytes: number];
 	};
 
