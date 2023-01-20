@@ -6,10 +6,16 @@ if (!fs.existsSync(native_path)) throw new Error("build the node-bindings packag
 
 if (process.env.NODE_ENV === "production") {
 	process.once("exit", () => {
-		fs.linkSync(
-			native_path,
-			path.resolve("./.output/wiwibloblib.node")
-		);
+		try {
+			fs.linkSync(
+				native_path,
+				path.resolve("./.output/wiwibloblib.node")
+			);
+		} catch (err) {
+			console.log("error in copying wiwibloblib.node:");
+			console.error(err);
+			console.log("if this is being run during `pnpm i` or `nuxt prepare`, please ignore this");
+		}
 	});
 } else {
 	const dev_path = path.resolve("./wiwibloblib.node");
