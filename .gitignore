@@ -11,3 +11,4 @@
 /server/node_modules
 /target
 /server/wiwibloblib.node
+/server/blobs
