@@ -6,6 +6,7 @@
 	"types": "./build/index.d.ts",
 	"scripts": {
 		"build": "pnpm run build:rs && pnpm run build:ts",
+		"build:production": "pnpm run build:rs -r && pnpm run build:ts",
 		"build:rs": "node build-and-cp-artifact.mjs",
 		"build:ts": "tsc"
 	},
