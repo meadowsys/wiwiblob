@@ -5,8 +5,8 @@
 				success!
 			</h1>
 			<br><br>
-			<div class="border-2 border-purple-500 rounded-lg p-8">
-				links to downloads (right click and choose "copy link"):<br>
+			<div class="border-2 border-purple-500 rounded-lg p-8 text-center">
+				{{ good.length === 1 ? "link to download" : "links to downloads" }} (right click and choose "copy link"):<br>
 				<template v-for="file in good">
 					<nuxt-link
 						:to="file.link"
@@ -14,6 +14,23 @@
 					>{{ file.filename || "<no name>" }}</nuxt-link>
 					<br>
 				</template>
+			</div>
+			<br>
+			<div class="flex flex-row">
+				<div class="flex-grow" />
+				<nuxt-link
+					to="/"
+					class="
+						block
+						px-4 py-2
+						border border-purple-300 rounded-md
+						hover:bg-purple-200 hover:border-purple-500 active:bg-purple-300 transition-colors
+						cursor-pointer
+					"
+				>
+					go home
+				</nuxt-link>
+				<div class="flex-grow" />
 			</div>
 		</template>
 		<template v-else-if="good === 'go home'">
