@@ -12,7 +12,7 @@ export default defineEventHandler(async event => {
 		keepExtensions: true
 	});
 
-	let promises: Array<Promise<string>> = [];
+	let promises: Array<Promise<{ filename?: string, hash: string }>> = [];
 	await new Promise<void>(res => {
 		formdata.parse(event.node.req, (err, fields, _files) => {
 			if (err) {
@@ -36,11 +36,24 @@ export default defineEventHandler(async event => {
 		});
 	});
 
-	let hashes = await Promise.all(promises);
-	return { hashes };
+	let files = await Promise.all(promises);
+
+	let questionmark = event.path!.indexOf("?");
+	if (questionmark < 0) return { files };
+
+	let searchparams = new URLSearchParams(event.path?.substring(questionmark));
+
+	if (searchparams.get("ui") !== null) {
+		let serialised = encodeURIComponent(files.map(f => `${f.filename || ""}:${f.hash}`).join(";"));
+		return sendRedirect(
+			event,
+			`${useRuntimeConfig().public.baseURL}uploaded?files=${serialised}`,
+			303
+		);
+	} else return { files };
 });
 
-async function process_file(file: File): Promise<string> {
+async function process_file(file: File): Promise<{ filename?: string, hash: string }> {
 	let wiwiblob = use_wiwiblob();
 
 	let writer_builder = wiwiblob.writer_builder();
@@ -52,7 +65,11 @@ async function process_file(file: File): Promise<string> {
 	read_stream.pipe(writer);
 	return await new Promise(res => {
 		writer.on("close", () => {
-			res(writer.get_hash());
+
+			res({
+				filename: file.originalFilename || undefined,
+				hash: writer.get_hash()
+			});
 		});
 	});
 }

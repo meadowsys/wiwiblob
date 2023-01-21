@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 
+const baseURL = "/";
+
 const native_path = path.resolve("../node-bindings/build/wiwibloblib.node");
 if (!fs.existsSync(native_path)) throw new Error("build the node-bindings package first");
 
@@ -29,6 +31,9 @@ export default defineNuxtConfig({
 	modules: [
 		"@nuxtjs/tailwindcss"
 	],
+	app: {
+		baseURL
+	},
 	typescript: {
 		shim: false,
 		strict: true,
@@ -36,6 +41,10 @@ export default defineNuxtConfig({
 	},
 	runtimeConfig: {
 		wiwiblobDir: "./blobs",
-		nativeWiwiblobPath: "./wiwibloblib.node"
+		nativeWiwiblobPath: "./wiwibloblib.node",
+		public: {
+			baseURL,
+			host: "http://localhost:3000"
+		}
 	}
 });
