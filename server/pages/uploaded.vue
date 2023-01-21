@@ -67,7 +67,6 @@
 	let good = ref<"not ready" | Array<{ filename: string, link: string }> | "go home" | "invalid hashes">("not ready");
 
 	let route = useRoute();
-	console.log(route.fullPath);
 	let questionmark = route.fullPath.indexOf("?");
 	if (questionmark < 0) good.value == "go home";
 	let urlparams = new URLSearchParams(route.fullPath.substring(questionmark));
