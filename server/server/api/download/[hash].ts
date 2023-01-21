@@ -11,7 +11,8 @@ export default defineEventHandler(async event => {
 		return { err: "not found" };
 	}
 
-	let verify = new URLSearchParams(event.path!.substring(event.path!.indexOf("?"))).get("verify");
+	let params = new URLSearchParams(event.path!.substring(event.path!.indexOf("?")));
+	let verify = params.get("verify");
 
 	let wiwiblob = use_wiwiblob();
 	let reader_builder = wiwiblob.reader_builder(hash);
@@ -41,9 +42,13 @@ export default defineEventHandler(async event => {
 	if (filetype && filetype.length === 1) setHeader(event, "content-type", filetype[0]);
 	else setHeader(event, "content-type", "application/octet-stream");
 
-	let filename = reader.get_filename()?.replace("\n", " ");
-	if (filename) setHeader(event, "content-disposition", `attachment; filename="${filename}"`);
-	else setHeader(event, "content-disposition", `attachment`);
+	if (params.get("view") !== null) {
+		setHeader(event, "content-disposition", "inline");
+	} else {
+		let filename = reader.get_filename()?.replace("\n", " ");
+		if (filename) setHeader(event, "content-disposition", `attachment; filename="${filename}"`);
+		else setHeader(event, "content-disposition", `attachment`);
+	}
 
 	// if this function hasn't thrown yet, then verification has succeeded
 	setHeader(event, "verify", "true");

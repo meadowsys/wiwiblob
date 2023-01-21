@@ -11,7 +11,16 @@
 					<nuxt-link
 						:to="file.link"
 						class="text-purple-500 underline hover:text-purple-700"
-					>{{ file.filename || "<no name>" }}</nuxt-link>
+					>
+						{{ file.filename || "<no name>" }}
+					</nuxt-link>
+					(<nuxt-link
+						:to="file.link + '?view'"
+						class="text-purple-500 underline hover:text-purple-700"
+						title="Only works if browser supports the file format"
+					>
+						view in browser
+					</nuxt-link>)
 					<br>
 				</template>
 			</div>
