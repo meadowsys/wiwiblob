@@ -9,14 +9,18 @@ let child_process: ChildProcessWithoutNullStreams;
 export async function use_surrealdb() {
 	if (surrealdb) return surrealdb;
 
-	let { bound_addr, cp, password: pass } = await spawn_surreal_process();
+	let { bound_addr, cp, pass } = await spawn_surreal_process();
+	if (process.env)
 	child_process = cp;
+
+	if (process.env.NODE_ENV === "development") console.log(`db password: ${pass}`);
 
 	surrealdb = new Surreal(`http://${bound_addr}`);
 	surrealdb.signin({
 		user: "root",
 		pass
 	});
+	surrealdb.use("wiwiblob", "wiwiblob");
 
 	child_process.on("exit", () => {
 		surrealdb?.close();
@@ -31,7 +35,7 @@ export async function use_surrealdb() {
 async function spawn_surreal_process() {
 	let config = useRuntimeConfig();
 
-	let password = await random_bytes(64).then(buf => buf.toString("base64url"));
+	let pass = await random_bytes(64).then(buf => buf.toString("base64url"));
 
 	let port = 30000 + await random_bytes(2).then(buf => buf[0] + buf[1]);
 	let bound_addr = `127.0.0.1:${port}`;
@@ -42,7 +46,7 @@ async function spawn_surreal_process() {
 		"--user",
 		"root",
 		"--pass",
-		password,
+		pass,
 		"--log",
 		process.env.NODE_ENV === "production" ? "info" : "debug",
 		"--bind",
@@ -67,7 +71,7 @@ async function spawn_surreal_process() {
 	let stderr_rl = createInterface(cp.stderr);
 	stderr_rl.on("line", l => console.log(`[surrealdb stderr] ${l}`));
 
-	return { bound_addr, cp, password };
+	return { bound_addr, cp, pass };
 }
 
 function random_bytes(n: number): Promise<Buffer> {
