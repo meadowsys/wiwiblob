@@ -42,6 +42,8 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		wiwiblobDir: "./blobs",
 		nativeWiwiblobPath: "./wiwibloblib.node",
+		surrealdbBinaryPath: "",
+		surrealdbDatabaseDir: "file://./database",
 		public: {
 			baseURL,
 			host: "http://localhost:3000"

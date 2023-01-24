@@ -7,8 +7,9 @@
 /server/.nitro
 /server/.nuxt
 /server/.output
+/server/blobs
+/server/database
 /server/dist
 /server/node_modules
-/target
 /server/wiwibloblib.node
-/server/blobs
+/target
