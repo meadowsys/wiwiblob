@@ -15,12 +15,12 @@ export async function use_surrealdb() {
 
 	if (process.env.NODE_ENV === "development") console.log(`db password: ${pass}`);
 
-	surrealdb = new Surreal(`http://${bound_addr}`);
-	surrealdb.signin({
+	surrealdb = new Surreal(`http://${bound_addr}/rpc`);
+	await surrealdb.signin({
 		user: "root",
 		pass
 	});
-	surrealdb.use("wiwiblob", "wiwiblob");
+	await surrealdb.use("wiwiblob", "wiwiblob");
 
 	child_process.on("exit", () => {
 		surrealdb?.close();
@@ -28,14 +28,22 @@ export async function use_surrealdb() {
 	});
 	process.on("exit", () => surrealdb?.close());
 
-	await surrealdb.wait();
+	let root = await surrealdb.query<any>(`select * from users where name = "root" limit 1;`);
+	if (root[0].result.length === 0) {
+		let root_passwd = (await random_bytes(32)).toString("base64url");
+		await surrealdb.query<any>(`create users:root set root_passwd = crypto::argon2::generate($root_passwd)`, {
+			root_passwd
+		});
+		console.log(`root password is ${root_passwd}`);
+	}
+
 	return surrealdb;
 }
 
 async function spawn_surreal_process() {
 	let config = useRuntimeConfig();
 
-	let pass = await random_bytes(64).then(buf => buf.toString("base64url"));
+	let pass = await random_bytes(64).then(buf => "dbpass_" + buf.toString("base64url"));
 
 	let port = 30000 + await random_bytes(2).then(buf => buf[0] + buf[1]);
 	let bound_addr = `127.0.0.1:${port}`;
