@@ -1,7 +1,7 @@
 import path from "path";
 import { new_wiwiblob_with_native_path } from "wiwiblob";
 
-let wiwiblob: ReturnType<typeof new_wiwiblob_with_native_path> | undefined = undefined;
+let wiwiblob: ReturnType<typeof new_wiwiblob_with_native_path>;
 
 export function use_wiwiblob() {
 	if (wiwiblob) return wiwiblob;

@@ -65,7 +65,6 @@ async function process_file(file: File): Promise<{ filename?: string, hash: stri
 	read_stream.pipe(writer);
 	return await new Promise(res => {
 		writer.on("close", () => {
-
 			res({
 				filename: file.originalFilename || undefined,
 				hash: writer.get_hash()
