@@ -23,6 +23,9 @@ export async function use_surrealdb() {
 		surrealdb = undefined;
 	});
 	process.on("exit", () => surrealdb?.close());
+
+	await surrealdb.wait();
+	return surrealdb;
 }
 
 async function spawn_surreal_process() {
