@@ -10,7 +10,6 @@ export async function use_surrealdb() {
 	if (surrealdb) return surrealdb;
 
 	let { bound_addr, cp, pass } = await spawn_surreal_process();
-	if (process.env)
 	child_process = cp;
 
 	if (process.env.NODE_ENV === "development") console.log(`db password: ${pass}`);
